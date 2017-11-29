@@ -20,15 +20,15 @@ gulp.task("sass", () => {
 });
 
 gulp.task("babel-browserify-develop", () => {
-    browserify({
-            entries: "./app/serviceWorkers/sw.js",
-            debug: true
-        })
-        .transform(babelify)
-        .bundle()
-        .pipe(source("sw.js"))
-        .pipe(buffer())
-        .pipe(gulp.dest("./dist/js"));
+    // browserify({
+    //         entries: "./app/serviceWorkers/sw.js",
+    //         debug: true
+    //     })
+    //     .transform(babelify)
+    //     .bundle()
+    //     .pipe(source("sw.js"))
+    //     .pipe(buffer())
+    //     .pipe(gulp.dest("./dist/js"));
 
     return browserify({
             entries: "./app/main.js",
@@ -43,16 +43,16 @@ gulp.task("babel-browserify-develop", () => {
 });
 
 gulp.task("babel-browserify-prod", () => {
-    browserify({
-            entries: "./app/serviceWorkers/sw.js",
-            debug: false
-        })
-        .transform(babelify)
-        .bundle()
-        .pipe(source("sw.js"))
-        .pipe(buffer())
-        .pipe(uglify())
-        .pipe(gulp.dest("./dist/js"));
+    // browserify({
+    //         entries: "./app/serviceWorkers/sw.js",
+    //         debug: false
+    //     })
+    //     .transform(babelify)
+    //     .bundle()
+    //     .pipe(source("sw.js"))
+    //     .pipe(buffer())
+    //     .pipe(uglify())
+    //     .pipe(gulp.dest("./dist/js"));
     return browserify({
             entries: "./app/main.js",
             debug: false
@@ -70,6 +70,7 @@ gulp.task("copy-files", () => {
     gulp.src("./app/index.html").pipe(gulp.dest("./dist/"));
     gulp.src("./app/assets/img/*").pipe(gulp.dest("./dist/img"));
     gulp.src("./node_modules/vuetify/dist/vuetify.min.css").pipe(gulp.dest("./dist/css"));
+    gulp.src("./app/serviceWorkers/*").pipe(gulp.dest("./dist"));
     return gulp.src("./app/manifest.webmanifest").pipe(gulp.dest("./dist"));
 });
 

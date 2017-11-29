@@ -1,14 +1,9 @@
 var filesToCache = [
-    '/sw-test/',
-    '/sw-test/index.html',
-    '/sw-test/style.css',
-    '/sw-test/app.js',
-    '/sw-test/image-list.js',
-    '/sw-test/star-wars-logo.jpg',
-    '/sw-test/gallery/',
-    '/sw-test/gallery/bountyHunters.jpg',
-    '/sw-test/gallery/myLittleVader.jpg',
-    '/sw-test/gallery/snowTroopers.jpg'
+    '/',
+    '/index.html',
+    '/css/styles.css',
+    '/img/logo.png',
+    '/js/main.js'
 ];
 
 this.addEventListener('install', function (event) {
