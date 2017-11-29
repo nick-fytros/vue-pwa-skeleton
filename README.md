@@ -1,1 +1,1 @@
-## Apache Cordova mobile android and ios app
+## VueJS PWA skeleton
