@@ -9,6 +9,14 @@ const uglify = require("gulp-uglify");
 const vueify = require("vueify");
 const connect = require('gulp-connect');
 const clean = require('gulp-clean');
+const replace = require('gulp-replace');
+const packageJson = require('./package.json');
+
+gulp.task("app-shell-cache-version", ["clean"], () => {
+    gulp.src(['./app/serviceWorkers/sw.js'])
+        .pipe(replace('\'cacheVersion\'', '\'v' + packageJson.version + '\''))
+        .pipe(gulp.dest('./app/serviceWorkers/'));
+});
 
 gulp.task("sass", ["clean"], () => {
     return gulp
@@ -67,7 +75,7 @@ gulp.task("babel-browserify-prod", ["clean"], () => {
         .pipe(gulp.dest("./dist/js"));
 });
 
-gulp.task("copy-files", ["clean"], () => {
+gulp.task("copy-files", ["clean", "app-shell-cache-version"], () => {
     gulp.src("./app/index.html").pipe(gulp.dest("./dist/"));
     gulp.src("./app/assets/img/*").pipe(gulp.dest("./dist/img"));
     gulp.src("./node_modules/vuetify/dist/vuetify.min.css").pipe(gulp.dest("./dist/css"));
@@ -97,8 +105,8 @@ gulp.task("watch", () => {
     );
 });
 
-gulp.task("build", ["clean", "sass", "babel-browserify-develop", "copy-files"]);
+gulp.task("build", ["clean", "sass", "babel-browserify-develop", "copy-files", "app-shell-cache-version"]);
 
-gulp.task("deploy", ["clean", "sass", "babel-browserify-prod", "copy-files"]);
+gulp.task("deploy", ["clean", "sass", "babel-browserify-prod", "copy-files", "app-shell-cache-version"]);
 
 gulp.task("default", ["build", "run", "watch"]);
