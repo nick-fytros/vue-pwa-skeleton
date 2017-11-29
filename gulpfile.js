@@ -8,8 +8,9 @@ const buffer = require("vinyl-buffer");
 const uglify = require("gulp-uglify");
 const vueify = require("vueify");
 const connect = require('gulp-connect');
+const clean = require('gulp-clean');
 
-gulp.task("sass", () => {
+gulp.task("sass", ["clean"], () => {
     return gulp
         .src("./app/assets/scss/**/*.scss")
         .pipe(sass({
@@ -19,7 +20,7 @@ gulp.task("sass", () => {
         .pipe(gulp.dest("./dist/css"));
 });
 
-gulp.task("babel-browserify-develop", () => {
+gulp.task("babel-browserify-develop", ["clean"], () => {
     // browserify({
     //         entries: "./app/serviceWorkers/sw.js",
     //         debug: true
@@ -42,7 +43,7 @@ gulp.task("babel-browserify-develop", () => {
         .pipe(gulp.dest("./dist/js"));
 });
 
-gulp.task("babel-browserify-prod", () => {
+gulp.task("babel-browserify-prod", ["clean"], () => {
     // browserify({
     //         entries: "./app/serviceWorkers/sw.js",
     //         debug: false
@@ -66,12 +67,19 @@ gulp.task("babel-browserify-prod", () => {
         .pipe(gulp.dest("./dist/js"));
 });
 
-gulp.task("copy-files", () => {
+gulp.task("copy-files", ["clean"], () => {
     gulp.src("./app/index.html").pipe(gulp.dest("./dist/"));
     gulp.src("./app/assets/img/*").pipe(gulp.dest("./dist/img"));
     gulp.src("./node_modules/vuetify/dist/vuetify.min.css").pipe(gulp.dest("./dist/css"));
     gulp.src("./app/serviceWorkers/*").pipe(gulp.dest("./dist"));
     return gulp.src("./app/manifest.webmanifest").pipe(gulp.dest("./dist"));
+});
+
+gulp.task("clean", () => {
+    return gulp.src('dist', {
+            read: true
+        })
+        .pipe(clean());
 });
 
 gulp.task("run", ["build"], () => {
@@ -85,12 +93,12 @@ gulp.task("run", ["build"], () => {
 
 gulp.task("watch", () => {
     gulp.watch(
-        ["./app/assets/scss/**/*.scss", "./app/**/*.js", "./app/**/*.vue", "./app/**/*.html"], ["build", "copy-files", "run"]
+        ["./app/assets/scss/**/*.scss", "./app/**/*.js", "./app/**/*.vue", "./app/**/*.html"], ["build", "run"]
     );
 });
 
-gulp.task("build", ["sass", "babel-browserify-develop", "copy-files"]);
+gulp.task("build", ["clean", "sass", "babel-browserify-develop", "copy-files"]);
 
-gulp.task("deploy", ["sass", "babel-browserify-prod", "copy-files"]);
+gulp.task("deploy", ["clean", "sass", "babel-browserify-prod", "copy-files"]);
 
 gulp.task("default", ["build", "run", "watch"]);
