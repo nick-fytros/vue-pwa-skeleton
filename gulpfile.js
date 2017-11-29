@@ -14,7 +14,7 @@ const packageJson = require('./package.json');
 
 gulp.task("app-shell-cache-version", ["clean"], () => {
     gulp.src(['./app/serviceWorkers/sw.js'])
-        .pipe(replace('\'cacheVersion\'', '\'v' + packageJson.version + '\''))
+        .pipe(replace(/'v[0-9]+\.[0-9]+\.[0-9]+'/g, '\'v' + packageJson.version + '\''))
         .pipe(gulp.dest('./app/serviceWorkers/'));
 });
 
